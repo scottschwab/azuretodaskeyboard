@@ -6,7 +6,7 @@ import json
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
-SOURCE_URL = "http://localhost:7071/api/az2keyboard"
+SOURCE_URL = "https://message2az.azurewebsites.net/api/az2keyboard"
 
 BACKEND_URL = "http://localhost:27301"
 API = "/api/1.0/signals"
@@ -32,6 +32,8 @@ def send_signal(display_info, message):
 def driver():
     logger.info(f"loading from {SOURCE_URL}")
     response = requests.get(SOURCE_URL)
+    if response.status_code != 200 or len(response.content) < 1:
+        return
     request_body_str = response.content.decode("utf-8")
     request_body = json.loads(request_body_str)
 
